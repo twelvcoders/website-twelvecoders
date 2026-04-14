@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XII RPL - SMK Maarif NU Dolopo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --primary: #00f3ff;
+            --secondary: #bc13fe;
+            --gold: #ffd700;
+            --text-main: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background: radial-gradient(circle at top left, #12002b, #0b0f19, #001220);
+        }
+
+        /* Canvas for Smoke Cursor */
+        #smoke-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        nav .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        /* Reusable Classes */
+        section {
+            padding: 100px 5vw;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            font-weight: 900;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--primary);
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            animation: glowText 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowText {
+            from { text-shadow: 0 0 10px rgba(0,243,255,0.2); }
+            to { text-shadow: 0 0 30px rgba(188,19,254,0.8); }
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(100px) scale(0.9);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* HOME */
+        #home {
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--gold), var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #aaa;
+        }
+
+        .btn-group a {
+            padding: 15px 30px;
+            margin: 0 10px;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.8);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        /* DATA SISWA */
+        .grid-siswa {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            width: 100%;
+        }
+
+        .card-siswa {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-siswa::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            opacity: 0;
+            transition: 0.5s;
+            pointer-events: none;
+        }
+
+        .card-siswa:hover {
+            transform: translateY(-15px) scale(1.05) rotateX(10deg);
+            box-shadow: 0 20px 40px rgba(0, 243, 255, 0.3);
+            border-color: var(--primary);
+            z-index: 10;
+        }
+
+        .card-siswa:hover::before {
+            opacity: 1;
+            transform: rotate(45deg);
+        }
+
+        .foto-siswa {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            border: 3px solid var(--secondary);
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .card-siswa:hover .foto-siswa {
+            border-color: var(--gold);
+            transform: scale(1.2);
+            box-shadow: 0 0 20px var(--gold);
+        }
+
+        /* ALBUM */
+        .masonry {
+            column-count: 3;
+            column-gap: 20px;
+        }
+
+        .masonry-item {
+            margin-bottom: 20px;
+            break-inside: avoid;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            transition: 0.5s;
+            border: 1px solid var(--glass-border);
+        }
+
+        .masonry-item img {
+            width: 100%;
+            display: block;
+            transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .masonry-item:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(188, 19, 254, 0.5);
+            border-color: var(--secondary);
+            z-index: 2;
+        }
+
+        .masonry-item:hover img {
+            filter: contrast(120%) brightness(1.2);
+            transform: scale(1.1) rotate(-2deg);
+        }
+
+        /* TENTANG */
+        .tentang-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            padding: 50px;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        
+        .tentang-content i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px var(--primary));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* FOOTER / INSTAGRAM */
+        footer {
+            background: #050810;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .instagram-btn {
+            display: inline-block;
+            font-size: 2rem;
+            color: #fff;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            padding: 15px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(220, 39, 67, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .instagram-btn:hover {
+            transform: scale(1.2) rotate(360deg);
+            box-shadow: 0 0 30px rgba(220, 39, 67, 0.8);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .masonry { column-count: 2; }
+            .hero-text h1 { font-size: 2.5rem; }
+            nav ul { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="smoke-canvas"></canvas>
+
+    <nav>
+        <div class="logo">RPL <span style="color: #fff;">XII</span></div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#siswa">Data Siswa</a></li>
+            <li><a href="#album">Album</a></li>
+            <li><a href="#tentang">Tentang</a></li>
+        </ul>
+    </nav>
+
+    <section id="home">
+        <div class="hero-text reveal">
+            <h1>Kelas XII RPL<br>SMK Maarif NU Dolopo</h1>
+            <p>Generasi Digital. Inovator Masa Depan.</p>
+            <div class="btn-group">
+                <a href="#siswa" class="btn-primary">Lihat Siswa</a>
+                <a href="#album" class="btn-outline">Galeri Kelas</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="siswa">
+        <h2 class="section-title reveal">Data Siswa</h2>
+        <div class="grid-siswa" id="siswa-container">
+            </div>
+    </section>
+
+    <section id="album">
+        <h2 class="section-title reveal">Album Memori</h2>
+        <div class="masonry" id="album-container">
+            </div>
+    </section>
+
+    <section id="tentang">
+        <h2 class="section-title reveal">Tentang Kami</h2>
+        <div class="tentang-content reveal">
+            <i class="fa-solid fa-code"></i>
+            <h3>Rekayasa Perangkat Lunak</h3>
+            <p style="margin-top: 20px; color: #ccc; line-height: 1.8;">
+                Kami adalah angkatan XII RPL dari SMK Maarif NU Dolopo. Kelas yang berdedikasi tinggi dalam bidang pemrograman, desain antarmuka, dan pengembangan teknologi modern. Dengan semangat kolaborasi, kami membangun solusi digital untuk masa depan.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <a href="https://instagram.com/twelvecoders" target="_blank" class="instagram-btn reveal">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+        <p style="color: #666; font-size: 0.9rem;">&copy; 2026 XII RPL SMK Maarif NU Dolopo. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // --- RENDER DATA SISWA (15 Data) ---
+        const siswaContainer = document.getElementById('siswa-container');
+        for (let i = 1; i <= 15; i++) {
+            const card = document.createElement('div');
+            card.className = 'card-siswa reveal';
+            card.innerHTML = `
+                <img src="https://i.pravatar.cc/150?img=${i + 10}" alt="Siswa ${i}" class="foto-siswa">
+                <h3 style="margin-bottom: 5px;">Siswa RPL ${i}</h3>
+                <p style="font-size: 0.8rem; color: var(--primary);">Fullstack Developer</p>
+            `;
+            siswaContainer.appendChild(card);
+        }
+
+        // --- RENDER ALBUM (25 Foto) ---
+        const albumContainer = document.getElementById('album-container');
+        for (let i = 1; i <= 25; i++) {
+            // Tinggi random untuk efek masonry
+            const height = Math.floor(Math.random() * (400 - 200 + 1)) + 200;
+            const item = document.createElement('div');
+            item.className = 'masonry-item reveal';
+            item.innerHTML = `<img src="https://picsum.photos/400/${height}?random=${i}" alt="Memori ${i}">`;
+            albumContainer.appendChild(item);
+        }
+
+        // --- SCROLL ANIMATION (INTERSECTION OBSERVER) ---
+        const reveals = document.querySelectorAll('.reveal');
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const scrollObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        reveals.forEach(reveal => {
+            scrollObserver.observe(reveal);
+        });
+
+        // --- EFEK ASAP WARNA-WARNI MENGKUTI KURSOR (SMOKE TRAIL) ---
+        const canvas = document.getElementById('smoke-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray = [];
+        let hue = 0;
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        const mouse = { x: undefined, y: undefined };
+        
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+            for (let i = 0; i < 3; i++) {
+                particlesArray.push(new Particle());
+            }
+        });
+
+        class Particle {
+            constructor() {
+                this.x = mouse.x;
+                this.y = mouse.y;
+                this.size = Math.random() * 15 + 5;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = 'hsl(' + hue + ', 100%, 50%)';
+                this.life = 1; // Opacity
+            }
+            update() {
+                this.x += this.speedX;
+                this.y -= this.speedY; // Asap naik ke atas sedikit
+                this.size += 0.2; // Membesar
+                this.life -= 0.02; // Memudar
+            }
+            draw() {
+                ctx.globalAlpha = Math.max(0, this.life);
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.filter = 'blur(5px)'; // Efek blur asap
+            }
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                if (particlesArray[i].life <= 0) {
+                    particlesArray.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function animateSmoke() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            hue += 2;
+            requestAnimationFrame(animateSmoke);
+        }
+        animateSmoke();
+    </script>
+</body>
+</html>
