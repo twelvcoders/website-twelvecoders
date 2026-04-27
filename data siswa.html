@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Siswa</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .container { padding: 120px 5% 50px; }
+        .search-container { margin-bottom: 30px; text-align: center; }
+        .search-bar {
+            padding: 15px 25px;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 50px;
+            border: none;
+            background: var(--card-bg);
+            color: var(--text-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .student-card { padding: 20px; text-align: center; }
+        .student-card h3 { color: var(--primary); margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" style="text-decoration: none;"><div class="logo">BACK</div></a>
+        <div class="theme-switch" id="theme-toggle"><i class="fas fa-moon"></i></div>
+    </nav>
+
+    <div class="container">
+        <div class="search-container reveal">
+            <input type="text" id="searchInput" class="search-bar" placeholder="Cari nama temanmu...">
+        </div>
+        <div class="student-grid" id="studentGrid">
+            <!-- JS will populate -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const students = [
+            {nama: "Ahmad Zaki", nis: "1001", hobi: "Gaming"},
+            {nama: "Bella Ciao", nis: "1002", hobi: "Coding"},
+            {nama: "Citra Lestari", nis: "1003", hobi: "Reading"},
+            {nama: "Dedi Irawan", nis: "1004", hobi: "Music"},
+            {nama: "Eka Putri", nis: "1005", hobi: "Drawing"},
+            {nama: "Farhan Ali", nis: "1006", hobi: "Sports"},
+            {nama: "Gita Gutawa", nis: "1007", hobi: "Singing"},
+            {nama: "Hadi Kusuma", nis: "1008", hobi: "Travel"},
+            {nama: "Indah Permata", nis: "1009", hobi: "Cooking"},
+            {nama: "Jaka Tarub", nis: "1010", hobi: "Sleeping"}
+        ];
+
+        const grid = document.getElementById('studentGrid');
+        const search = document.getElementById('searchInput');
+
+        function renderStudents(filter = "") {
+            grid.innerHTML = "";
+            students.filter(s => s.nama.toLowerCase().includes(filter.toLowerCase())).forEach((s, i) => {
+                const card = document.createElement('div');
+                card.className = 'glass-card student-card reveal';
+                card.style.transitionDelay = `${i * 0.1}s`;
+                card.innerHTML = `
+                    <i class="fas fa-user-graduate" style="font-size: 3rem; margin-bottom:10px"></i>
+                    <h3>${s.nama}</h3>
+                    <p>NIS: ${s.nis}</p>
+                    <p>Hobi: ${s.hobi}</p>
+                `;
+                grid.appendChild(card);
+                setTimeout(() => card.classList.add('active'), 100);
+            });
+        }
+
+        search.addEventListener('input', (e) => renderStudents(e.target.value));
+        renderStudents();
+    </script>
+</body>
+</html>
