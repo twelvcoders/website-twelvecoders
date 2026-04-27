@@ -3,665 +3,513 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XII RPL - SMK Maarif NU Dolopo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <title>Website Kelas XII RPL | Digital Portfolio</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
     <style>
         :root {
-            --bg-color: #060913;
-            --primary: #5ef5ff;
-            --secondary: #9b7bff;
-            --gold: #ffe083;
-            --accent: #ff6ec7;
-            --text-main: #ffffff;
-            --glass-bg: rgba(255, 255, 255, 0.06);
-            --glass-border: rgba(160, 190, 255, 0.22);
+            --primary-grad: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            --bg-light: #f4f7f6;
+            --text-light: #2d3436;
+            --glass: rgba(255, 255, 255, 0.2);
+            --neon-blue: #00d2ff;
+            --neon-purple: #9d50bb;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            scroll-behavior: smooth;
+        [data-theme="dark"] {
+            --bg-light: #0a0a0a;
+            --text-light: #f1f1f1;
+            --glass: rgba(0, 0, 0, 0.6);
+            --primary-grad: linear-gradient(-45deg, #0f0c29, #302b63, #24243e);
+            --neon-blue: #00ff88;
+            --neon-purple: #ff00ff;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background: var(--bg-light);
+            color: var(--text-light);
             overflow-x: hidden;
-            background: radial-gradient(circle at 20% 20%, #2a114f, #090f24 45%, #05070f 100%);
-            animation: bgFlow 18s ease-in-out infinite alternate;
-            position: relative;
+            transition: background 0.5s ease;
         }
 
-        @keyframes bgFlow {
-            0% { filter: saturate(100%); }
-            100% { filter: saturate(130%); }
-        }
-
-        #space-bg {
+        /* --- Background Animated --- */
+        #particles-js {
             position: fixed;
-            inset: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
         }
 
-        .space-star,
-        .space-orb {
-            position: absolute;
-            border-radius: 50%;
-        }
-
-        .space-star {
-            width: var(--size);
-            height: var(--size);
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 0 10px rgba(176, 222, 255, 0.9);
-            opacity: 0.7;
-            animation: twinkle var(--twinkle) ease-in-out infinite;
-        }
-
-        .space-orb {
-            width: var(--size);
-            height: var(--size);
-            background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9), var(--orb-color) 70%, transparent 100%);
-            filter: blur(1px);
-            opacity: 0.45;
-            animation: orbitDrift var(--drift) linear infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { transform: scale(0.8); opacity: 0.25; }
-            50% { transform: scale(1.4); opacity: 0.95; }
-        }
-
-        @keyframes orbitDrift {
-            0% { transform: translate3d(0, 0, 0); }
-            50% { transform: translate3d(30px, -45px, 0); }
-            100% { transform: translate3d(-20px, -90px, 0); }
-        }
-
-        /* Canvas for Smoke Cursor */
-        #smoke-canvas {
+        .bg-anim {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 9999;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary-grad);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            z-index: -2;
+            opacity: 0.8;
         }
 
-        /* Navigation */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Navbar --- */
         nav {
             position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 20px 50px;
+            top: 0; width: 100%;
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(11, 15, 25, 0.8);
+            background: var(--glass);
             backdrop-filter: blur(10px);
             z-index: 1000;
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        nav .logo {
-            font-size: 24px;
-            font-weight: 900;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        .nav-logo { font-weight: bold; font-size: 1.5rem; letter-spacing: 2px; }
+
+        .theme-switch {
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: var(--transition);
         }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-
-        nav ul li a {
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.3s;
-            position: relative;
-        }
-
-        nav ul li a:hover {
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary);
-        }
-
-        /* Reusable Classes */
-        section {
-            padding: 100px 5vw;
+        /* --- Main Container & Pages --- */
+        .page {
+            display: none;
+            padding: 100px 5% 50px;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            animation: fadeInUp 0.8s ease forwards;
         }
 
-        .section-title {
-            text-align: center;
-            font-size: 3rem;
-            margin-bottom: 50px;
-            text-transform: uppercase;
-            font-weight: 900;
-            color: transparent;
-            -webkit-text-stroke: 1px var(--primary);
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            background-clip: text;
-            -webkit-background-clip: text;
-            animation: glowText 2s ease-in-out infinite alternate;
+        .page.active { display: block; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes glowText {
-            from { text-shadow: 0 0 10px rgba(0,243,255,0.2); }
-            to { text-shadow: 0 0 30px rgba(188,19,254,0.8); }
-        }
-
-        /* Scroll Reveal Animation */
-        .reveal {
-            opacity: 0;
-            transform: translateY(100px) scale(0.9);
-            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        /* HOME */
-        #home {
-            align-items: center;
-            text-align: center;
-            position: relative;
-        }
-
-        .hero-text h1 {
-            font-size: 4rem;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, var(--gold), var(--primary), var(--secondary), var(--accent));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 24px rgba(94, 245, 255, 0.25);
-        }
-
-        .hero-text p {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            color: #d8dcff;
-            text-shadow: 0 0 18px rgba(155, 123, 255, 0.55);
-        }
-
-        .hero-line,
-        .hero-tagline {
-            display: inline-block;
-            transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.25, 1), letter-spacing 0.5s ease;
-            will-change: transform, filter;
-        }
-
-        .hero-line.chaos-active,
-        .hero-tagline.chaos-active {
-            animation: chaosReturn 1.1s cubic-bezier(0.15, 0.87, 0.3, 1) both;
-            filter: drop-shadow(0 0 14px rgba(255,255,255,0.35))
-                    drop-shadow(0 0 28px rgba(155, 123, 255, 0.65))
-                    drop-shadow(0 0 36px rgba(94, 245, 255, 0.5));
-        }
-
-        @keyframes chaosReturn {
-            0% {
-                transform: translate(0, 0) rotate(0deg) scale(1);
-                letter-spacing: normal;
-            }
-            35% {
-                transform: translate(calc((var(--scatter-x) * 1px)), calc((var(--scatter-y) * 1px))) rotate(calc(var(--scatter-r) * 1deg)) scale(1.08);
-                letter-spacing: 3px;
-            }
-            100% {
-                transform: translate(0, 0) rotate(0deg) scale(1);
-                letter-spacing: normal;
-            }
-        }
-
-        .btn-group a {
-            padding: 15px 30px;
-            margin: 0 10px;
-            text-decoration: none;
-            color: #fff;
-            border-radius: 30px;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: 0.4s;
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-            border: 1px solid transparent;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            box-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: scale(1.1) translateY(-5px);
-            box-shadow: 0 0 40px rgba(0, 243, 255, 0.8);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border-color: var(--primary) !important;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary);
-            color: #000;
-            transform: scale(1.1);
-        }
-
-        /* DATA SISWA */
-        .grid-siswa {
+        /* --- INDEX / NAVIGATION MENU --- */
+        .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            width: 100%;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 50px;
         }
 
-        .card-siswa {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.5s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-siswa::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-            opacity: 0;
-            transition: 0.5s;
-            pointer-events: none;
-        }
-
-        .card-siswa:hover {
-            transform: translateY(-15px) scale(1.05) rotateX(10deg);
-            box-shadow: 0 20px 40px rgba(0, 243, 255, 0.3);
-            border-color: var(--primary);
-            z-index: 10;
-        }
-
-        .card-siswa:hover::before {
-            opacity: 1;
-            transform: rotate(45deg);
-        }
-
-        .foto-siswa {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            border: 3px solid var(--secondary);
-            object-fit: cover;
-            transition: 0.5s;
-        }
-
-        .card-siswa:hover .foto-siswa {
-            border-color: var(--gold);
-            transform: scale(1.2);
-            box-shadow: 0 0 20px var(--gold);
-        }
-
-        /* ALBUM */
-        .masonry {
-            column-count: 3;
-            column-gap: 20px;
-        }
-
-        .masonry-item {
-            margin-bottom: 20px;
-            break-inside: avoid;
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-            transition: 0.5s;
-            border: 1px solid var(--glass-border);
-        }
-
-        .masonry-item img {
-            width: 100%;
-            display: block;
-            transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .masonry-item:hover {
-            transform: scale(1.05) translateY(-10px);
-            box-shadow: 0 15px 30px rgba(188, 19, 254, 0.5);
-            border-color: var(--secondary);
-            z-index: 2;
-        }
-
-        .masonry-item:hover img {
-            filter: contrast(120%) brightness(1.2);
-            transform: scale(1.1) rotate(-2deg);
-        }
-
-        /* TENTANG */
-        .tentang-content {
-            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-            padding: 50px;
-            border-radius: 30px;
-            border: 1px solid var(--glass-border);
-            text-align: center;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
-            position: relative;
-        }
-        
-        .tentang-content i {
-            font-size: 4rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 10px var(--primary));
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        /* FOOTER / INSTAGRAM */
-        footer {
-            background: #050810;
+        .menu-card {
+            background: var(--glass);
             padding: 40px 20px;
+            border-radius: 20px;
             text-align: center;
-            border-top: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.1);
             position: relative;
             overflow: hidden;
         }
 
-        .instagram-btn {
-            display: inline-block;
-            font-size: 2rem;
-            color: #fff;
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            padding: 15px 20px;
-            border-radius: 50px;
-            text-decoration: none;
+        .menu-card i { font-size: 3rem; margin-bottom: 15px; display: block; }
+
+        .menu-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--neon-blue);
+            background: rgba(255,255,255,0.3);
+        }
+
+        [data-theme="dark"] .menu-card:hover {
+            box-shadow: 0 0 40px var(--neon-purple);
+            border-color: var(--neon-purple);
+        }
+
+        /* --- HOME PAGE --- */
+        .home-hero { text-align: center; margin-top: 10vh; }
+        .bounce-icon { font-size: 5rem; animation: bounce 2s infinite; color: var(--neon-blue); }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-30px);}
+            60% {transform: translateY(-15px);}
+        }
+        .typing { 
+            border-right: 3px solid;
+            width: fit-content;
+            margin: 20px auto;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3.5s steps(30, end), blink .75s step-end infinite;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--neon-blue); } }
+
+        /* --- DATA SISWA --- */
+        .search-container { margin-bottom: 30px; text-align: center; }
+        .search-container input {
+            padding: 10px 20px;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 25px;
+            border: none;
+            background: var(--glass);
+            color: white;
+            outline: none;
+        }
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .student-card {
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 15px;
+            transition: var(--transition);
+        }
+        .student-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+        /* --- ALBUM --- */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 250px;
+            cursor: pointer;
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.2); filter: brightness(0.7); }
+        .overlay {
+            position: absolute; bottom: -100%; left: 0; width: 100%;
+            background: rgba(0,0,0,0.7); color: white; padding: 15px;
             transition: 0.4s;
-            box-shadow: 0 10px 20px rgba(220, 39, 67, 0.4);
-            margin-bottom: 20px;
+        }
+        .gallery-item:hover .overlay { bottom: 0; }
+
+        /* --- MUSIC PLAYER --- */
+        .player-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: var(--glass);
+            padding: 30px;
+            border-radius: 30px;
+            text-align: center;
+        }
+        .vinyl {
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: #333;
+            margin: 0 auto 20px;
+            border: 10px solid #222;
+            animation: rotate 5s linear infinite;
+            animation-play-state: paused;
+        }
+        .vinyl.playing { animation-play-state: running; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        canvas { width: 100%; height: 60px; margin: 10px 0; }
+
+        /* --- TIMELINE --- */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: ''; position: absolute; width: 6px; background: white;
+            top: 0; bottom: 0; left: 50%; margin-left: -3px;
+        }
+        .t-container {
+            padding: 10px 40px; position: relative; width: 50%;
+        }
+        .t-left { left: 0; }
+        .t-right { left: 50%; }
+        .t-content {
+            padding: 20px; background: var(--glass); border-radius: 10px;
         }
 
-        .instagram-btn:hover {
-            transform: scale(1.2) rotate(360deg);
-            box-shadow: 0 0 30px rgba(220, 39, 67, 0.8);
+        /* Modal Lightbox */
+        #lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); display: none; justify-content: center;
+            align-items: center; z-index: 2000;
         }
+        #lightbox img { max-width: 90%; max-height: 80%; border: 5px solid white; }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .masonry { column-count: 2; }
-            .hero-text h1 { font-size: 2.5rem; }
-            nav ul { display: none; }
-        }
+        /* Utils */
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 20px; }
+        .glow-text { text-shadow: 0 0 10px var(--neon-blue); }
     </style>
 </head>
-<body>
+<body data-theme="light">
 
-    <canvas id="smoke-canvas"></canvas>
-    <div id="space-bg"></div>
+    <div id="particles-js"></div>
+    <div class="bg-anim"></div>
 
     <nav>
-        <div class="logo">RPL <span style="color: #fff;">XII</span></div>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#siswa">Data Siswa</a></li>
-            <li><a href="#album">Album</a></li>
-            <li><a href="#tentang">Tentang</a></li>
-        </ul>
+        <div class="nav-logo" onclick="showPage('index')"><i class="fas fa-code"></i> XII RPL</div>
+        <div class="theme-switch" id="themeBtn" onclick="toggleTheme()">
+            <i class="fas fa-moon"></i>
+        </div>
     </nav>
 
-    <section id="home">
-        <div class="hero-text reveal">
-            <h1>
-                <span class="hero-line">Kelas XII RPL</span><br>
-                <span class="hero-line">SMK Maarif NU Dolopo</span>
-            </h1>
-            <p class="hero-tagline">Generasi Digital. Inovator Masa Depan.</p>
-            <div class="btn-group">
-                <a href="#siswa" class="btn-primary">Lihat Siswa</a>
-                <a href="#album" class="btn-outline">Galeri Kelas</a>
+    <section id="index" class="page active">
+        <h1 class="text-center glow-text" style="font-size: 3rem;">MAIN MENU</h1>
+        <div class="menu-grid">
+            <div class="menu-card" onclick="showPage('home')">
+                <i class="fas fa-house"></i>
+                <h3>Home</h3>
+            </div>
+            <div class="menu-card" onclick="showPage('siswa')">
+                <i class="fas fa-user-graduate"></i>
+                <h3>Data Siswa</h3>
+            </div>
+            <div class="menu-card" onclick="showPage('album')">
+                <i class="fas fa-images"></i>
+                <h3>Album</h3>
+            </div>
+            <div class="menu-card" onclick="showPage('music')">
+                <i class="fas fa-music"></i>
+                <h3>Favorite Song</h3>
+            </div>
+            <div class="menu-card" onclick="showPage('about')">
+                <i class="fas fa-circle-info"></i>
+                <h3>Tentang</h3>
             </div>
         </div>
     </section>
 
-    <section id="siswa">
-        <h2 class="section-title reveal">Data Siswa</h2>
-        <div class="grid-siswa" id="siswa-container">
+    <section id="home" class="page">
+        <div class="home-hero">
+            <i class="fas fa-house bounce-icon"></i>
+            <h1 class="typing">Selamat Datang di Website Kelas Kami!</h1>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h4>Nama Kelas</h4>
+                    <p>XII Rekayasa Perangkat Lunak</p>
+                </div>
+                <div class="menu-card">
+                    <h4>Wali Kelas</h4>
+                    <p>Bpk. Ahmad, S.Kom</p>
+                </div>
+                <div class="menu-card">
+                    <h4>Moto</h4>
+                    <p><i>"Code Your Future, Debug Your Life"</i></p>
+                </div>
             </div>
-    </section>
-
-    <section id="album">
-        <h2 class="section-title reveal">Album Memori</h2>
-        <div class="masonry" id="album-container">
-            </div>
-    </section>
-
-    <section id="tentang">
-        <h2 class="section-title reveal">Tentang Kami</h2>
-        <div class="tentang-content reveal">
-            <i class="fa-solid fa-code"></i>
-            <h3>Rekayasa Perangkat Lunak</h3>
-            <p style="margin-top: 20px; color: #ccc; line-height: 1.8;">
-                Kami adalah angkatan XII RPL dari SMK Maarif NU Dolopo. Kelas yang berdedikasi tinggi dalam bidang pemrograman, desain antarmuka, dan pengembangan teknologi modern. Dengan semangat kolaborasi, kami membangun solusi digital untuk masa depan.
-            </p>
+            <button class="menu-card mt-2" onclick="showPage('index')">Kembali ke Menu</button>
         </div>
     </section>
 
-    <footer>
-        <a href="https://instagram.com/twelvecoders" target="_blank" class="instagram-btn reveal">
-            <i class="fa-brands fa-instagram"></i>
-        </a>
-        <p style="color: #666; font-size: 0.9rem;">&copy; 2026 XII RPL SMK Maarif NU Dolopo. All Rights Reserved.</p>
-    </footer>
+    <section id="siswa" class="page">
+        <h2 class="text-center mb-2"><i class="fas fa-user-group"></i> Database Siswa</h2>
+        <div class="search-container mt-2">
+            <input type="text" id="studentSearch" placeholder="Cari nama siswa..." onkeyup="filterStudents()">
+        </div>
+        <div class="student-grid" id="studentList">
+            </div>
+    </section>
+
+    <section id="album" class="page">
+        <h2 class="text-center"><i class="fas fa-images"></i> Galeri Kenangan</h2>
+        <div class="gallery mt-2" id="galleryGrid">
+            </div>
+    </section>
+
+    <section id="music" class="page">
+        <div class="player-container">
+            <div class="vinyl" id="vinyl"></div>
+            <h3>Yang Patah Tumbuh, Yang Hilang Berganti</h3>
+            <p>Banda Neira</p>
+            <canvas id="visualizer"></canvas>
+            <audio id="mainAudio" src="https://mp3tourl.com/audio/1777300508407-9b196423-0e37-4908-bc3a-d221315ad050.mp3"></audio>
+            <div class="controls mt-2">
+                <button class="menu-card" style="display:inline-block; padding: 15px;" onclick="togglePlay()">
+                    <i class="fas fa-play" id="playIcon"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="page">
+        <h2 class="text-center">Sejarah Kelas</h2>
+        <div class="timeline mt-2">
+            <div class="t-container t-left">
+                <div class="t-content">
+                    <h3>2023</h3>
+                    <p>Pertama kali terbentuk di kelas X RPL.</p>
+                </div>
+            </div>
+            <div class="t-container t-right">
+                <div class="t-content">
+                    <h3>2024</h3>
+                    <p>Memenangkan lomba Web Design antar sekolah.</p>
+                </div>
+            </div>
+            <div class="t-container t-left">
+                <div class="t-content">
+                    <h3>2025</h3>
+                    <p>Persiapan Ujian Kompetensi Keahlian (UKK).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="lightbox" onclick="this.style.display='none'">
+        <img src="" id="lightboxImg">
+    </div>
 
     <script>
-        // --- RENDER DATA SISWA (15 Data) ---
-        const siswaContainer = document.getElementById('siswa-container');
-        for (let i = 1; i <= 15; i++) {
-            const card = document.createElement('div');
-            card.className = 'card-siswa reveal';
-            card.innerHTML = `
-                <img src="https://i.pravatar.cc/150?img=${i + 10}" alt="Siswa ${i}" class="foto-siswa">
-                <h3 style="margin-bottom: 5px;">Siswa RPL ${i}</h3>
-                <p style="font-size: 0.8rem; color: var(--primary);">Fullstack Developer</p>
-            `;
-            siswaContainer.appendChild(card);
+        // --- Navigation Logic ---
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0,0);
         }
 
-        // --- RENDER ALBUM (25 Foto) ---
-        const albumContainer = document.getElementById('album-container');
-        for (let i = 1; i <= 25; i++) {
-            // Tinggi random untuk efek masonry
-            const height = Math.floor(Math.random() * (400 - 200 + 1)) + 200;
-            const item = document.createElement('div');
-            item.className = 'masonry-item reveal';
-            item.innerHTML = `<img src="https://picsum.photos/400/${height}?random=${i}" alt="Memori ${i}">`;
-            albumContainer.appendChild(item);
-        }
-
-        // --- SCROLL ANIMATION (INTERSECTION OBSERVER) ---
-        const reveals = document.querySelectorAll('.reveal');
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        };
-
-        const scrollObserver = new IntersectionObserver(function(entries, observer) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, observerOptions);
-
-        reveals.forEach(reveal => {
-            scrollObserver.observe(reveal);
-        });
-
-        // --- BACKGROUND ANIMASI RUANG ANGKASA ---
-        const spaceBg = document.getElementById('space-bg');
-        function createSpaceObjects(stars = 90, orbs = 12) {
-            for (let i = 0; i < stars; i++) {
-                const star = document.createElement('span');
-                star.className = 'space-star';
-                const size = (Math.random() * 2 + 1).toFixed(2) + 'px';
-                star.style.setProperty('--size', size);
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.setProperty('--twinkle', (Math.random() * 3 + 2).toFixed(2) + 's');
-                spaceBg.appendChild(star);
-            }
-            const orbColors = ['rgba(94,245,255,0.9)', 'rgba(255,110,199,0.9)', 'rgba(155,123,255,0.9)'];
-            for (let j = 0; j < orbs; j++) {
-                const orb = document.createElement('span');
-                orb.className = 'space-orb';
-                orb.style.setProperty('--size', (Math.random() * 120 + 50).toFixed(2) + 'px');
-                orb.style.left = Math.random() * 100 + '%';
-                orb.style.top = Math.random() * 100 + '%';
-                orb.style.setProperty('--drift', (Math.random() * 28 + 20).toFixed(2) + 's');
-                orb.style.setProperty('--orb-color', orbColors[Math.floor(Math.random() * orbColors.length)]);
-                spaceBg.appendChild(orb);
+        // --- Dark Mode Logic ---
+        function toggleTheme() {
+            const body = document.body;
+            const themeBtn = document.getElementById('themeBtn');
+            if(body.getAttribute('data-theme') === 'light') {
+                body.setAttribute('data-theme', 'dark');
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.setAttribute('data-theme', 'light');
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
             }
         }
-        createSpaceObjects();
 
-        // --- ANIMASI TEKS "BERANTAKAN LALU KEMBALI" + GLOW ---
-        const heroAnimatedTexts = document.querySelectorAll('.hero-line, .hero-tagline');
-        let chaosCooldown = false;
+        // --- Data Siswa Generator ---
+        const students = [
+            {nama: "Aditya", nis: "1001", hobi: "Coding"},
+            {nama: "Budi", nis: "1002", hobi: "Gaming"},
+            {nama: "Citra", nis: "1003", hobi: "Desain"},
+            {nama: "Deni", nis: "1004", hobi: "Musik"},
+            {nama: "Eka", nis: "1005", hobi: "Futsal"},
+            {nama: "Farhan", nis: "1006", hobi: "Membaca"},
+            {nama: "Gita", nis: "1007", hobi: "Masak"},
+            {nama: "Hadi", nis: "1008", hobi: "Catur"},
+            {nama: "Indah", nis: "1009", hobi: "Menyanyi"},
+            {nama: "Joko", nis: "1010", hobi: "Traveling"},
+        ];
 
-        function triggerChaosText() {
-            if (chaosCooldown) return;
-            chaosCooldown = true;
-            heroAnimatedTexts.forEach(el => {
-                el.style.setProperty('--scatter-x', (Math.random() * 120 - 60).toFixed(1));
-                el.style.setProperty('--scatter-y', (Math.random() * 80 - 40).toFixed(1));
-                el.style.setProperty('--scatter-r', (Math.random() * 16 - 8).toFixed(1));
-                el.classList.remove('chaos-active');
-                void el.offsetWidth;
-                el.classList.add('chaos-active');
-            });
-            setTimeout(() => {
-                heroAnimatedTexts.forEach(el => el.classList.remove('chaos-active'));
-                chaosCooldown = false;
-            }, 1200);
+        function renderStudents() {
+            const container = document.getElementById('studentList');
+            container.innerHTML = students.map(s => `
+                <div class="student-card">
+                    <h4>${s.nama}</h4>
+                    <p>NIS: ${s.nis}</p>
+                    <p>Hobi: ${s.hobi}</p>
+                </div>
+            `).join('');
         }
 
-        window.addEventListener('scroll', triggerChaosText, { passive: true });
-        window.addEventListener('touchmove', triggerChaosText, { passive: true });
-        document.getElementById('home').addEventListener('mouseenter', triggerChaosText);
+        function filterStudents() {
+            const val = document.getElementById('studentSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.student-card');
+            cards.forEach(card => {
+                const name = card.querySelector('h4').innerText.toLowerCase();
+                card.style.display = name.includes(val) ? 'block' : 'none';
+            });
+        }
 
-        // --- EFEK ASAP WARNA-WARNI MENGKUTI KURSOR (SMOKE TRAIL) ---
-        const canvas = document.getElementById('smoke-canvas');
+        // --- Gallery Generator ---
+        const photos = [
+            {url: "https://picsum.photos/400/300?random=1", desc: "Kunjungan Industri"},
+            {url: "https://picsum.photos/400/300?random=2", desc: "Lomba Classmeet"},
+            {url: "https://picsum.photos/400/300?random=3", desc: "Praktikum Lab"},
+            {url: "https://picsum.photos/400/300?random=4", desc: "Makan Bareng"},
+            {url: "https://picsum.photos/400/300?random=5", desc: "Kelompok Project"},
+            {url: "https://picsum.photos/400/300?random=6", desc: "Wisuda"}
+        ];
+
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = photos.map(p => `
+                <div class="gallery-item" onclick="openLightbox('${p.url}')">
+                    <img src="${p.url}" loading="lazy">
+                    <div class="overlay">
+                        <p>${p.desc}</p>
+                        <small>20 April 2026</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openLightbox(url) {
+            document.getElementById('lightbox').style.display = 'flex';
+            document.getElementById('lightboxImg').src = url;
+        }
+
+        // --- Music Logic ---
+        const audio = document.getElementById('mainAudio');
+        const playIcon = document.getElementById('playIcon');
+        const vinyl = document.getElementById('vinyl');
+
+        function togglePlay() {
+            if(audio.paused) {
+                audio.play();
+                playIcon.className = 'fas fa-pause';
+                vinyl.classList.add('playing');
+            } else {
+                audio.pause();
+                playIcon.className = 'fas fa-play';
+                vinyl.classList.remove('playing');
+            }
+        }
+
+        // --- Visualizer ---
+        const canvas = document.getElementById('visualizer');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        function drawVisualizer() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff88';
+            for(let i=0; i<20; i++) {
+                const h = Math.random() * (audio.paused ? 5 : 40);
+                ctx.fillRect(i*15, canvas.height - h, 10, h);
+            }
+            requestAnimationFrame(drawVisualizer);
+        }
 
-        let particlesArray = [];
-        let hue = 0;
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        // --- Particles JS Config ---
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80 },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5 },
+                "size": { "value": 3 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
+                "move": { "enable": true, "speed": 2 }
+            },
+            "interactivity": {
+                "events": { "onhover": { "enable": true, "mode": "repulse" } }
+            }
         });
 
-        function spawnSmoke(x, y, count = 12) {
-            for (let i = 0; i < count; i++) {
-                particlesArray.push(new Particle(x, y));
-            }
-        }
-
-        let lastTouchSmoke = 0;
-        window.addEventListener('mousemove', (event) => {
-            spawnSmoke(event.x, event.y, 8);
-        });
-        window.addEventListener('touchmove', (event) => {
-            const now = performance.now();
-            if (now - lastTouchSmoke < 24) return;
-            lastTouchSmoke = now;
-            for (const touch of event.touches) {
-                spawnSmoke(touch.clientX, touch.clientY, 10);
-            }
-        }, { passive: true });
-        window.addEventListener('scroll', () => {
-            const x = window.innerWidth * (0.35 + Math.random() * 0.3);
-            const y = window.innerHeight * (0.55 + Math.random() * 0.25);
-            spawnSmoke(x, y, 16);
-        }, { passive: true });
-
-        class Particle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 26 + 14;
-                this.speedX = Math.random() * 2.5 - 1.25;
-                this.speedY = Math.random() * 2.8 - 1.4;
-                this.color = 'hsla(' + (hue + Math.random() * 65) + ', 100%, 62%, 1)';
-                this.life = 1; // Opacity
-            }
-            update() {
-                this.x += this.speedX;
-                this.y -= this.speedY; // Asap naik ke atas sedikit
-                this.size += 0.42; // Membesar
-                this.life -= 0.018; // Memudar
-            }
-            draw() {
-                ctx.globalAlpha = Math.max(0, this.life);
-                ctx.filter = 'blur(12px)';
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.filter = 'none';
-            }
-        }
-
-        function handleParticles() {
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-                if (particlesArray[i].life <= 0) {
-                    particlesArray.splice(i, 1);
-                    i--;
-                }
-            }
-        }
-
-        function animateSmoke() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.globalCompositeOperation = 'screen';
-            handleParticles();
-            hue += 2;
-            requestAnimationFrame(animateSmoke);
-        }
-        animateSmoke();
+        // Initialize
+        window.onload = () => {
+            renderStudents();
+            renderGallery();
+            drawVisualizer();
+            if(localStorage.getItem('theme') === 'dark') toggleTheme();
+        };
     </script>
 </body>
 </html>
