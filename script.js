@@ -1,81 +1,148 @@
-// --- RENDER DATA SISWA (15) ---
-const siswaContainer = document.getElementById('siswa-container');
-for (let i = 1; i <= 15; i++) {
-    const card = document.createElement('div');
-    card.className = 'card-siswa reveal';
-    card.innerHTML = `
-        <img src="https://i.pravatar.cc/150?img=${i + 10}" alt="Siswa ${i}" class="foto-siswa">
-        <h3>Siswa RPL ${i}</h3>
-        <p style="font-size: 0.8rem; color: #00f3ff;">Software Engineer</p>
-    `;
-    siswaContainer.appendChild(card);
-}
-
-// --- RENDER ALBUM (25) ---
-const albumContainer = document.getElementById('album-container');
-for (let i = 1; i <= 25; i++) {
-    const height = Math.floor(Math.random() * 200) + 200;
-    const item = document.createElement('div');
-    item.className = 'masonry-item reveal';
-    item.innerHTML = `<img src="https://picsum.photos/400/${height}?random=${i}" alt="Memori ${i}">`;
-    albumContainer.appendChild(item);
-}
-
-// --- SCROLL REVEAL LOGIC ---
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('active');
-    });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// --- SMOKE CURSOR LOGIC ---
-const canvas = document.getElementById('smoke-canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particlesArray = [];
-let hue = 0;
-
-window.addEventListener('mousemove', (e) => {
-    for (let i = 0; i < 3; i++) particlesArray.push(new Particle(e.x, e.y));
-});
-
-class Particle {
-    constructor(x, y) {
-        this.x = x; this.y = y;
-        this.size = Math.random() * 15 + 5;
-        this.speedX = Math.random() * 3 - 1.5;
-        this.speedY = Math.random() * 3 - 1.5;
-        this.color = `hsl(${hue}, 100%, 50%)`;
-        this.life = 1;
-    }
-    update() {
-        this.x += this.speedX; this.y -= this.speedY;
-        this.size += 0.2; this.life -= 0.02;
-    }
-    draw() {
-        ctx.globalAlpha = Math.max(0, this.life);
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-    }
-}
-
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
-        particlesArray[i].draw();
-        if (particlesArray[i].life <= 0) {
-            particlesArray.splice(i, 1);
-            i--;
+// 1. Particle JS Config
+function initParticles() {
+    particlesJS("particles-js", {
+        "particles": {
+            "number": { "value": 100 },
+            "color": { "value": "#ffffff" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.5, "random": true },
+            "size": { "value": 3, "random": true },
+            "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
+            "move": { "enable": true, "speed": 1.5 }
+        },
+        "interactivity": {
+            "events": { "onhover": { "enable": true, "mode": "repulse" } }
         }
-    }
-    hue += 2;
-    requestAnimationFrame(animate);
+    });
 }
-animate();
+
+// 2. Theme Switcher
+function toggleTheme() {
+    const body = document.body;
+    const icon = document.getElementById('theme-icon');
+    const theme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    
+    body.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    
+    if(icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+    const icon = document.getElementById('theme-icon');
+    if(icon) icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+// 3. Data Siswa logic
+const students = [
+    {nama: "Aris Munandar", nis: "2101", hobi: "Coding"},
+    {nama: "Bima Sakti", nis: "2102", hobi: "Gaming"},
+    {nama: "Clara Ayu", nis: "2103", hobi: "Design"},
+    {nama: "Dewi Lestari", nis: "2104", hobi: "Musik"},
+    {nama: "Erlangga", nis: "2105", hobi: "Basket"},
+    {nama: "Fahmi Nur", nis: "2106", hobi: "Membaca"},
+    {nama: "Gisella", nis: "2107", hobi: "Masak"},
+    {nama: "Handoko", nis: "2108", hobi: "Robotik"},
+    {nama: "Indra", nis: "2109", hobi: "Catur"},
+    {nama: "Jasmine", nis: "2110", hobi: "Traveling"}
+];
+
+function renderStudents() {
+    const list = document.getElementById('studentList');
+    if(!list) return;
+    list.innerHTML = students.map((s, i) => `
+        <div class="student-card" style="animation-delay: ${i * 0.1}s">
+            <h4>${s.nama}</h4>
+            <p>NIS: ${s.nis}</p>
+            <p>Hobi: ${s.hobi}</p>
+        </div>
+    `).join('');
+}
+
+function filterStudents() {
+    const q = document.getElementById('studentSearch').value.toLowerCase();
+    document.querySelectorAll('.student-card').forEach(card => {
+        const name = card.querySelector('h4').innerText.toLowerCase();
+        card.style.display = name.includes(q) ? 'block' : 'none';
+    });
+}
+
+// 4. Gallery logic
+const images = [
+    "https://picsum.photos/600/400?random=1",
+    "https://picsum.photos/600/400?random=2",
+    "https://picsum.photos/600/400?random=3",
+    "https://picsum.photos/600/400?random=4",
+    "https://picsum.photos/600/400?random=5",
+    "https://picsum.photos/600/400?random=6"
+];
+
+function renderGallery() {
+    const grid = document.getElementById('galleryGrid');
+    if(!grid) return;
+    grid.innerHTML = images.map(img => `
+        <div class="gallery-item" onclick="openLightbox('${img}')">
+            <img src="${img}" loading="lazy">
+        </div>
+    `).join('');
+}
+
+function openLightbox(src) {
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightboxImg');
+    if(lb && img) {
+        lb.style.display = 'flex';
+        img.src = src;
+    }
+}
+
+// 5. Music Player
+function setupAudio() {
+    const audio = document.getElementById('mainAudio');
+    const progress = document.getElementById('progressBar');
+    if(!audio || !progress) return;
+    
+    audio.ontimeupdate = () => {
+        progress.value = (audio.currentTime / audio.duration) * 100;
+    };
+    
+    progress.oninput = () => {
+        audio.currentTime = (progress.value / 100) * audio.duration;
+    };
+}
+
+function togglePlay() {
+    const audio = document.getElementById('mainAudio');
+    const icon = document.getElementById('playIcon');
+    const vinyl = document.getElementById('vinyl');
+    
+    if(audio.paused) {
+        audio.play();
+        icon.className = 'fas fa-pause';
+        vinyl.classList.add('playing');
+    } else {
+        audio.pause();
+        icon.className = 'fas fa-play';
+        vinyl.classList.remove('playing');
+    }
+}
+
+function drawVisualizer() {
+    const canvas = document.getElementById('visualizer');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    
+    function animate() {
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--neon').trim();
+        
+        for(let i=0; i<30; i++) {
+            const h = Math.random() * (document.getElementById('mainAudio').paused ? 5 : 50);
+            ctx.fillRect(i * 12, canvas.height - h, 8, h);
+        }
+        requestAnimationFrame(animate);
+    }
+    animate();
+}
