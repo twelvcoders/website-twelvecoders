@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Kelas XII | Digital Portfolio</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+        :root {
+            --primary-grad: linear-gradient(-45deg, #0f172a, #334155, #10b981, #3b82f6);
+            --bg-light: #f8fafc;
+            --text-light: #0f172a;
+            --glass: rgba(255, 255, 255, 0.7);
+            --neon-blue: #10b981;
+            --neon-purple: #3b82f6;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        [data-theme="dark"] {
+            --bg-light: #020617;
+            --text-light: #f8fafc;
+            --glass: rgba(15, 23, 42, 0.8);
+            --primary-grad: linear-gradient(-45deg, #020617, #0f172a, #1e293b);
+            --neon-blue: #10b981;
+            --neon-purple: #3b82f6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-light);
+            overflow-x: hidden;
+            transition: background 0.5s ease;
+        }
+
+        h1, h2, h3, h4, .nav-logo { font-family: 'Poppins', sans-serif; font-weight: 700; }
+        .nis, .counter, .mono, #visualizer { font-family: 'JetBrains Mono', monospace; }
+
+
+        /* --- Background Animated --- */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .bg-anim {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary-grad);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            z-index: -2;
+            opacity: 0.8;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Navbar --- */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-logo { font-weight: bold; font-size: 1.5rem; letter-spacing: 2px; }
+
+        .theme-switch {
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        /* --- Main Container & Pages --- */
+        .page {
+            display: none;
+            padding: 100px 5% 50px;
+            min-height: 100vh;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .page.active { display: block; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- INDEX / NAVIGATION MENU --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .menu-card {
+            background: var(--glass);
+            padding: 40px 20px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card i { font-size: 3rem; margin-bottom: 15px; display: block; }
+
+        .menu-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--neon-blue);
+            background: rgba(255,255,255,0.3);
+        }
+
+        [data-theme="dark"] .menu-card:hover {
+            box-shadow: 0 0 40px var(--neon-purple);
+            border-color: var(--neon-purple);
+        }
+
+        /* --- HOME PAGE --- */
+        .home-hero { text-align: center; margin-top: 10vh; }
+        .bounce-icon { font-size: 5rem; animation: bounce 2s infinite; color: var(--neon-blue); }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-30px);}
+            60% {transform: translateY(-15px);}
+        }
+        .typing { 
+            border-right: 3px solid;
+            width: fit-content;
+            margin: 20px auto;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3.5s steps(30, end), blink .75s step-end infinite;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--neon-blue); } }
+
+        /* --- DATA SISWA --- */
+        .search-container { margin-bottom: 30px; text-align: center; }
+        .search-container input {
+            padding: 10px 20px;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 25px;
+            border: none;
+            background: var(--glass);
+            color: white;
+            outline: none;
+        }
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .student-card {
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 15px;
+            transition: var(--transition);
+        }
+        .student-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+        /* --- ALBUM --- */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 250px;
+            cursor: pointer;
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.2); filter: brightness(0.7); }
+        .overlay {
+            position: absolute; bottom: -100%; left: 0; width: 100%;
+            background: rgba(0,0,0,0.7); color: white; padding: 15px;
+            transition: 0.4s;
+        }
+        .gallery-item:hover .overlay { bottom: 0; }
+
+        /* --- MUSIC PLAYER --- */
+        .player-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: var(--glass);
+            padding: 30px;
+            border-radius: 30px;
+            text-align: center;
+        }
+        .vinyl {
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: #333;
+            margin: 0 auto 20px;
+            border: 10px solid #222;
+            animation: rotate 5s linear infinite;
+            animation-play-state: paused;
+        }
+        .vinyl.playing { animation-play-state: running; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        canvas { width: 100%; height: 60px; margin: 10px 0; }
+
+        /* --- TIMELINE --- */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: ''; position: absolute; width: 6px; background: white;
+            top: 0; bottom: 0; left: 50%; margin-left: -3px;
+        }
+        .t-container {
+            padding: 10px 40px; position: relative; width: 50%;
+        }
+        .t-left { left: 0; }
+        .t-right { left: 50%; }
+        .t-content {
+            padding: 20px; background: var(--glass); border-radius: 10px;
+        }
+
+        /* Modal Lightbox */
+        #lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); display: none; justify-content: center;
+            align-items: center; z-index: 2000;
+        }
+        #lightbox img { max-width: 90%; max-height: 80%; border: 5px solid white; }
+
+        /* Utils */
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 20px; }
+        
+        /* Welcome Text Animation */
+        .welcome-text {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            animation: neonFlow 3s infinite alternate;
+            margin-bottom: 30px;
+        }
+
+        @keyframes neonFlow {
+            0% { text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); color: #fff; }
+            50% { text-shadow: 0 0 15px var(--neon-purple), 0 0 30px var(--neon-purple); color: #f0f0f0; }
+            100% { text-shadow: 0 0 10px #f5576c, 0 0 25px #f5576c; color: #fff; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <div id="particles-js"></div>
+    <div class="bg-anim"></div>
+
+    <nav>
+        <div class="nav-logo" onclick="showPage('index')"><i class="fas fa-code"></i> XII RPL</div>
+        <div class="theme-switch" id="themeBtn" onclick="toggleTheme()">
+            <i class="fas fa-moon"></i>
+        </div>
+    </nav>
+
+    <section id="index" class="page active">
+        <h1 class="text-center welcome-text">WELCOME TO OUR CLASS</h1>
+        <div class="menu-grid">
+            <div class="menu-card" onclick="showPage('home')">
+                <i class="fas fa-house"></i>
+                <h3>Home</h3>
+            </div>
+            <div class="menu-card" onclick="showPage('siswa')">
+                <i class="fas fa-user-graduate"></i>
+                <h3>Data Siswa</h3>
+            </div>
+            <div class="menu-card" onclick="showPage('album')">
+                <i class="fas fa-images"></i>
+                <h3>Album</h3>
+            </div>
+            <div class="menu-card" onclick="showPage('music')">
+                <i class="fas fa-music"></i>
+                <h3>Favorite Song</h3>
+            </div>
+            <div class="menu-card" onclick="showPage('about')">
+                <i class="fas fa-circle-info"></i>
+                <h3>Tentang</h3>
+            </div>
+        </div>
+    </section>
+
+    <section id="home" class="page">
+        <div class="home-hero">
+            <i class="fas fa-house bounce-icon"></i>
+            <h1 class="typing">Selamat Datang di Website Kelas Kami!</h1>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <h4>Nama Kelas</h4>
+                    <p>XII Rekayasa Perangkat Lunak</p>
+                </div>
+                <div class="menu-card">
+                    <h4>Wali Kelas</h4>
+                    <p>Bpk. Ahmad, S.Kom</p>
+                </div>
+                <div class="menu-card">
+                    <h4>Moto</h4>
+                    <p><i>"Code Your Future, Debug Your Life"</i></p>
+                </div>
+            </div>
+            <button class="menu-card mt-2" onclick="showPage('index')">Kembali ke Menu</button>
+        </div>
+    </section>
+
+    <section id="siswa" class="page">
+        <h2 class="text-center mb-2"><i class="fas fa-user-group"></i> Database Siswa</h2>
+        <div class="search-container mt-2">
+            <input type="text" id="studentSearch" placeholder="Cari nama siswa..." onkeyup="filterStudents()">
+        </div>
+        <div class="student-grid" id="studentList">
+            </div>
+    </section>
+
+    <section id="album" class="page">
+        <h2 class="text-center"><i class="fas fa-images"></i> Galeri Kenangan</h2>
+        <div class="gallery mt-2" id="galleryGrid">
+            </div>
+    </section>
+
+    <section id="music" class="page">
+        <div class="player-container">
+            <div class="vinyl" id="vinyl"></div>
+            <h3 id="songTitle">Sampai Jadi Debu</h3>
+            <p id="songArtist">Banda Neira</p>
+            <canvas id="visualizer"></canvas>
+            <audio id="mainAudio" src="https://mp3tourl.com/audio/1777300508407-9b196423-0e37-4908-bc3a-d221315ad050.mp3"></audio>
+            <div class="controls mt-2">
+                <button class="menu-card" style="display:inline-block; padding: 15px;" onclick="changeSong(-1)">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button class="menu-card" style="display:inline-block; padding: 15px;" onclick="togglePlay()">
+                    <i class="fas fa-play" id="playIcon"></i>
+                </button>
+                <button class="menu-card" style="display:inline-block; padding: 15px;" onclick="changeSong(1)">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="page">
+        <h2 class="text-center">Sejarah Kelas</h2>
+        <div class="timeline mt-2">
+            <div class="t-container t-left">
+                <div class="t-content">
+                    <h3>2023</h3>
+                    <p>Saat kami pertama kali dipersatukan sebagai satu kelompok yang masih saling mengenal. Perbedaan karakter dan kebiasaan membuat kami harus belajar beradaptasi, dan dari situlah kebersamaan mulai tumbuh perlahan.</p>
+                </div>
+            </div>
+            <div class="t-container t-right">
+                <div class="t-content">
+                    <h3>2024</h3>
+                    <p>Hubungan kami semakin erat. Kami tidak lagi sekadar teman sekelas, tetapi menjadi tim yang saling mendukung. Berbagai momen, baik suka maupun tantangan, membentuk kami menjadi lebih dewasa dan saling memahami.</p>
+                </div>
+            </div>
+            <div class="t-container t-left">
+                <div class="t-content">
+                    <h3>2025</h3>
+                    <p>Kami berada di akhir perjalanan bersama. Waktu terasa lebih cepat, dan setiap kebersamaan menjadi lebih berarti karena kami tahu perpisahan semakin dekat. Dan pada bulan 13 Mei 2026, kami resmi lulus. Kami melangkah ke jalan masing-masing, membawa kenangan, pelajaran, dan ikatan yang telah terbentuk. Kelas ini bukan hanya tempat belajar, tetapi bagian dari perjalanan hidup yang akan selalu kami kenang.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="lightbox" onclick="this.style.display='none'">
+        <img src="" id="lightboxImg">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
